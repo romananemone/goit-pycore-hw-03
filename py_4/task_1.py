@@ -3,11 +3,11 @@ from datetime import datetime
 def get_days_from_today(date: str) -> int:
     today = datetime.today().date()
     try:
-        date_t = datetime.strptime(date, '%Y-%m-%d').date()
+        parsed_date = datetime.strptime(date, '%Y-%m-%d').date()
     except ValueError:
         raise ValueError(f"Incorrect date format: {date}. Expected format is 'YYYY-MM-DD'.")
         
-    difference = today - date_t
+    difference = today - parsed_date
     return difference
 
 
