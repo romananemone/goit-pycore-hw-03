@@ -1,26 +1,29 @@
-from datetime import datetime, timedelta
-
-users = [
-    {"name": "John Doe", "birthday": "1985.02.08"},
-    {"name": "Jane Smith", "birthday": "1990.01.27"},
-]
+from calendar import isleap
+from datetime import date, datetime, timedelta
 
 DATE_FORMAT = "%Y.%m.%d"
 
-def get_upcoming_birthdays(users: list[dict]) -> list[dict]:
+def get_birthday_this_year(birthday, current_year):
+    if birthday.month == 2 and birthday.day == 29 and not isleap(current_year):
+        return date(current_year, 2, 28)
+    
+    return birthday.replace(year=current_year)
+
+def get_upcoming_birthdays(users):
     upcoming_birthdays = []
     today = datetime.today().date()
-    
+
     for user in users:
         name = user["name"]
         birthday = user["birthday"]
 
-        birthday_this_year = datetime.strptime(birthday, DATE_FORMAT).date().replace(year=today.year)
+        parsed_birthday = datetime.strptime(birthday, DATE_FORMAT).date()
+        birthday_this_year = get_birthday_this_year(parsed_birthday, today.year)
         
         closest_birthday = birthday_this_year.replace(year=today.year + 1) if (birthday_this_year < today) else birthday_this_year
         days_to_closest_birthday = (closest_birthday - today).days
         
-        if days_to_closest_birthday <= 7 and days_to_closest_birthday >= 0:
+        if 0 <= days_to_closest_birthday <= 7:
             congratulation_date = closest_birthday
             weekday = congratulation_date.isoweekday()
 
@@ -36,5 +39,10 @@ def get_upcoming_birthdays(users: list[dict]) -> list[dict]:
 
 
 if __name__ == '__main__':
+    users = [
+        {"name": "John Doe", "birthday": "1985.02.08"},
+        {"name": "Jane Smith", "birthday": "1990.01.27"},
+        {"name": "Emily Davis", "birthday": "1992.02.14"},
+    ]
     upcoming_birthdays = get_upcoming_birthdays(users)
     print("Список привітань на цьому тижні:", upcoming_birthdays)
