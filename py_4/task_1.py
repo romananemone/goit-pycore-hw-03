@@ -8,7 +8,7 @@ def get_days_from_today(date: str) -> int:
         raise ValueError(f"Incorrect date format: {date}. Expected format is 'YYYY-MM-DD'.")
         
     difference = today - parsed_date
-    return difference
+    return difference.days
 
 
 if __name__ == '__main__':
