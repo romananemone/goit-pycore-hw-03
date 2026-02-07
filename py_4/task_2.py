@@ -4,6 +4,7 @@ def get_numbers_ticket(min: int, max: int, quantity: int) -> list:
     if (
         min < 1 or 
         max > 1000 or 
+        min > max or
         quantity < 0 or
         quantity > (max - min + 1)
     ):
