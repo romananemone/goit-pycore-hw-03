@@ -13,12 +13,14 @@ class UpcomingBirthday(TypedDict):
     congratulation_date: str
 
 def get_birthday_this_year(birthday: date, current_year: int) -> date:
+    """Return birthday date in the given year (Feb 29 -> Feb 28 if not leap)."""
     if birthday.month == 2 and birthday.day == 29 and not isleap(current_year):
         return date(current_year, 2, 28)
     
     return birthday.replace(year=current_year)
 
 def get_upcoming_birthdays(users: list[User]) -> list[UpcomingBirthday]:
+    """Return users to congratulate within the next 7 days (weekends -> Monday)."""
     upcoming_birthdays: list[UpcomingBirthday] = []
     today = datetime.today().date()
 
